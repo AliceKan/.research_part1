@@ -4,6 +4,7 @@ globals [
 
   c-count
   im
+  c-max
 
   next-indi
 ]
@@ -21,58 +22,124 @@ to setup
   resize-world 0 (wor-len - 1) 0 (wor-len - 1)
 
   set c-count 0
-  set im round (20 * 0.0001 * T ^ 4.76)
+  set c-max 0.5 * wor-len * wor-len
+  set im round (15 * 0.0001 * T ^ 4.76)
 
   ask patches [
     set pcolor white
     ;set label payoff
 
   ]
+
   ;ask patch 40 40 [
     ;set pcolor blue
  ; ]
-;;T=40
-  ;ask patch 30 30 [
-    ;set pcolor blue
-  ;]
-;; T=50
-  ;ask patch 70 90 [
-    ;set pcolor blue
-  ;]
-  ;ask patch 20 50 [
-    ;set pcolor blue
- ; ]
-  ;ask patch 80 30 [
-    ;set pcolor blue
-  ;]
-;; T=60
-  ask patch 30 85 [
-    set pcolor blue
+  if-else (initialstate = "seperated") [
+    ;;T=40
+    if (T = 40) [
+      ask patch 30 30 [
+        set pcolor blue
+      ]
+    ]
+
+    ;; T=50
+    if (T = 50) [
+      ask patch 70 90 [
+        set pcolor blue
+      ]
+      ask patch 20 50 [
+        set pcolor blue
+      ]
+      ask patch 80 30 [
+        set pcolor blue
+      ]
+    ]
+
+    ;; T=60
+    if (T = 60) [
+      ask patch 30 85 [
+        set pcolor blue
+      ]
+      ask patch 58 34 [
+        set pcolor blue
+      ]
+      ask patch 54 146 [
+        set pcolor blue
+      ]
+      ask patch 85 85 [
+        set pcolor blue
+      ]
+      ask patch 114 136 [
+        set pcolor blue
+      ]
+      ask patch 142 85 [
+        set pcolor blue
+      ]
+      ask patch 114 28 [
+        set pcolor blue
+      ]
+    ]
+
+
+  ][
+
+    ;;T=40
+    if (T = 40) [
+      ask patch 30 30 [
+        set pcolor blue
+      ]
+    ]
+
+    ;; T=50
+    if (T = 50) [
+      ask patch 50 50 [
+        set pcolor blue
+      ]
+      ask patch 51 50 [
+        set pcolor blue
+      ]
+      ask patch 50 51 [
+        set pcolor blue
+      ]
+    ]
+
+    ;; T=60
+    if (T = 60) [
+      ask patch 80 80 [
+        set pcolor blue
+      ]
+      ask patch 80 81 [
+        set pcolor blue
+      ]
+      ask patch 81 80 [
+        set pcolor blue
+      ]
+      ask patch 81 81 [
+        set pcolor blue
+      ]
+      ask patch 81 82 [
+        set pcolor blue
+      ]
+      ask patch 80 79 [
+        set pcolor blue
+      ]
+      ask patch 79 80 [
+        set pcolor blue
+      ]
+    ]
+
+
   ]
-  ask patch 58 34 [
-    set pcolor blue
-  ]
-  ask patch 54 146 [
-    set pcolor blue
- ]
-  ask patch 85 85 [
-    set pcolor blue
- ]
-  ask patch 114 136 [
-    set pcolor blue
-  ]
-  ask patch 142 85 [
-    set pcolor blue
-  ]
-  ask patch 114 28 [
-    set pcolor blue
-  ]
+
+
   reset-ticks
 end
 
 to go
-  if (ticks >= tot-ticks or c-count > im) [
+  if (ticks >= tot-ticks or c-count > c-max) [
     print ticks * interval_length
+    ;print c-count
+    ;print c-max
     set next-indi true
     stop]
 
@@ -97,7 +164,7 @@ to calculate-payoff
   let my-ch c-h
   let my-hc h-c
   let my-hh h-h
-  let my-punish 0.500
+  let my-punish 0.5
 
   if-else (pcolor = blue)
   [set payoff c-nei * my-cc + h-nei * my-ch - my-punish]
